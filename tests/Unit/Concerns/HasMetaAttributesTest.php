@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace KodeKeep\MetaAttributes\Tests\Unit\Concerns;
 
+use ArrayIterator;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Collection;
 use KodeKeep\MetaAttributes\Tests\TestCase;
 
 /**
@@ -38,21 +40,8 @@ class HasMetaAttributesTest extends TestCase
         $user->meta()->set('key2', 'value');
         $user->meta()->set('key3', 'value');
 
-        $this->assertSame([
-            [
-                'group' => null,
-                'key'   => 'key1',
-                'value' => 'value',
-            ], [
-                'group' => null,
-                'key'   => 'key2',
-                'value' => 'value',
-            ], [
-                'group' => null,
-                'key'   => 'key3',
-                'value' => 'value',
-            ],
-        ], $user->meta()->all()->toArray());
+        $this->assertInstanceOf(Collection::class, $user->meta()->all());
+        $this->assertCount(3, $user->meta()->all());
     }
 
     /** @test */
@@ -82,5 +71,55 @@ class HasMetaAttributesTest extends TestCase
         $user->meta()->forget('key');
 
         $this->assertFalse($user->meta()->has('key'));
+    }
+
+    /** @test */
+    public function it_implements_to_array(): void
+    {
+        $user = $this->user();
+
+        $user->meta()->set('key', 'value');
+
+        $this->assertIsArray($user->meta()->toArray());
+    }
+
+    /** @test */
+    public function it_implements_to_json(): void
+    {
+        $user = $this->user();
+
+        $user->meta()->set('key', 'value');
+
+        $this->assertIsString($user->meta()->toJson());
+    }
+
+    /** @test */
+    public function it_implements_json_serialize(): void
+    {
+        $user = $this->user();
+
+        $user->meta()->set('key', 'value');
+
+        $this->assertIsArray($user->meta()->jsonSerialize());
+    }
+
+    /** @test */
+    public function it_implements_count(): void
+    {
+        $user = $this->user();
+
+        $user->meta()->set('key', 'value');
+
+        $this->assertSame(1, $user->meta()->count());
+    }
+
+    /** @test */
+    public function it_implements_get_iterator(): void
+    {
+        $user = $this->user();
+
+        $user->meta()->set('key', 'value');
+
+        $this->assertInstanceOf(ArrayIterator::class, $user->meta()->getIterator());
     }
 }

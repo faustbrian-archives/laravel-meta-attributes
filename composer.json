@@ -51,10 +51,7 @@
         "laravel": {
             "providers": [
                 "KodeKeep\\MetaAttributes\\Providers\\MetaAttributesServiceProvider"
-            ],
-            "aliases": {
-                "MetaAttributes": "KodeKeep\\MetaAttributes\\Facades\\MetaAttributes"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

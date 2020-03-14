@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace KodeKeep\MetaAttributes\Concerns;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use KodeKeep\MetaAttributes\MetaAttributeRepository;
+use KodeKeep\MetaAttributes\MetaAttributes;
 use KodeKeep\MetaAttributes\Models\MetaAttribute;
 
 trait HasMetaAttributes
@@ -24,8 +24,8 @@ trait HasMetaAttributes
         return $this->morphMany(MetaAttribute::class, 'metable');
     }
 
-    public function meta(?string $group = null): MetaAttributeRepository
+    public function meta(?string $group = null): MetaAttributes
     {
-        return new MetaAttributeRepository($this, $group);
+        return new MetaAttributes($this, $group);
     }
 }
