@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.2.0 - 2020-03-14
+
+### Added
+
+- Implemented `ArrayAccess#offsetGet`
+- Implemented `ArrayAccess#offsetExists`
+- Implemented `ArrayAccess#offsetSet`
+- Implemented `ArrayAccess#offsetUnset`
+
 ## 1.1.0 - 2020-03-14
 
 ### Added
