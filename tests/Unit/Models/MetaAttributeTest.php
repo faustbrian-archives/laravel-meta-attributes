@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use KodeKeep\MetaAttributes\Tests\TestCase;
 
 /**
- * @covers \KodeKeep\MetaAttributes\Models\HasMetaAttributes
+ * @covers \KodeKeep\MetaAttributes\Models\MetaAttribute
  */
 class MetaAttributeTest extends TestCase
 {
