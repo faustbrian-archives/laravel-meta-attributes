@@ -20,11 +20,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Implemented `toArray`
-- Implemented `toJson`
-- Implemented `jsonSerialize`
-- Implemented `count`
-- Implemented `getIterator`
+- Implemented `Arrayable#toArray`
+- Implemented `Jsonable#toJson`
+- Implemented `JsonSerializable#jsonSerialize`
+- Implemented `Countable#count`
+- Implemented `IteratorAggregate#getIterator`
 
 ### Changed
 
