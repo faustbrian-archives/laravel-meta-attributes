@@ -20,6 +20,7 @@ use KodeKeep\MetaAttributes\Tests\TestCase;
 
 /**
  * @covers \KodeKeep\MetaAttributes\Concerns\HasMetaAttributes
+ * @covers \KodeKeep\MetaAttributes\MetaAttributes
  */
 class HasMetaAttributesTest extends TestCase
 {
@@ -54,7 +55,8 @@ class HasMetaAttributesTest extends TestCase
         $user->meta()->set('key', 'value');
 
         $this->assertTrue($user->meta()->has('key'));
-        $this->assertSame('value', $user->meta()->get('key')->value);
+        $this->assertSame('value', $user->meta()->get('key'));
+        $this->assertSame('defaultValue', $user->meta()->get('unknownKey', 'defaultValue'));
     }
 
     /** @test */

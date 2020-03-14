@@ -2,7 +2,7 @@
 .idea
 .phpunit.result.cache
 build
+clover.xml
 composer.lock
-coverage.xml
 docs
 vendor

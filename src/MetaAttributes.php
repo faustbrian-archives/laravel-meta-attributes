@@ -47,7 +47,9 @@ class MetaAttributes implements Arrayable, Countable, IteratorAggregate, Jsonabl
     public function get($key, $default = null)
     {
         if ($this->has($key)) {
-            return $this->getQuery($key)->first();
+            $item = $this->getQuery($key)->first();
+
+            return $item ? $item->value : $default;
         }
 
         return $default;
