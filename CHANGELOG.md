@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## 1.2.1 - 2020-03-14
+
+### Fixed
+
+- Scope internal collection to the current group to avoid dots in keys
+
 ## 1.2.0 - 2020-03-14
 
 ### Added
