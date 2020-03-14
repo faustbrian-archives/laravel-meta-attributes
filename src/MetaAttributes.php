@@ -129,11 +129,11 @@ class MetaAttributes implements ArrayAccess, Arrayable, Countable, IteratorAggre
 
     private function loadCollection(): self
     {
-        $this->collection = $this->model->fresh()->metaAttributes->mapWithKeys(function ($item) {
-            $key =is_null($item['group']) ? $item['key'] : $item['group'].'.'.$item['key'];
-
-            return [$key => $item['value']];
-        });
+        $this->collection = $this->model->fresh()
+            ->metaAttributes()
+            ->where('group', $this->group)
+            ->get()
+            ->mapWithKeys(fn ($item) => [$item['key'] => $item['value']]);
 
         return $this;
     }
