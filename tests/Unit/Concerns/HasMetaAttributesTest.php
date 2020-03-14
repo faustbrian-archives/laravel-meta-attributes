@@ -39,10 +39,9 @@ class HasMetaAttributesTest extends TestCase
 
         $user->meta()->set('key1', 'value');
         $user->meta()->set('key2', 'value');
-        $user->meta()->set('key3', 'value');
 
         $this->assertInstanceOf(Collection::class, $user->meta()->all());
-        $this->assertCount(3, $user->meta()->all());
+        $this->assertCount(2, $user->meta()->all());
     }
 
     /** @test */
@@ -57,6 +56,19 @@ class HasMetaAttributesTest extends TestCase
         $this->assertTrue($user->meta()->has('key'));
         $this->assertSame('value', $user->meta()->get('key'));
         $this->assertSame('defaultValue', $user->meta()->get('unknownKey', 'defaultValue'));
+    }
+
+    /** @test */
+    public function it_can_set_and_get_a_value_via_offset(): void
+    {
+        $user = $this->user();
+
+        $this->assertFalse(isset($user->meta()['key']));
+
+        $user->meta()['key'] = 'value';
+
+        $this->assertTrue(isset($user->meta()['key']));
+        $this->assertSame('value', $user->meta()['key']);
     }
 
     /** @test */
@@ -76,13 +88,31 @@ class HasMetaAttributesTest extends TestCase
     }
 
     /** @test */
+    public function it_can_set_and_forget_a_value_via_offset(): void
+    {
+        $user = $this->user();
+
+        $this->assertFalse(isset($user->meta()['key']));
+
+        $user->meta()->set('key', 'value');
+
+        $this->assertTrue(isset($user->meta()['key']));
+
+        unset($user->meta()['key']);
+
+        $this->assertFalse(isset($user->meta()['key']));
+    }
+
+    /** @test */
     public function it_implements_to_array(): void
     {
         $user = $this->user();
 
-        $user->meta()->set('key', 'value');
+        $user->meta()->set('key1', 'value');
+        $user->meta()->set('key2', 'value');
 
         $this->assertIsArray($user->meta()->toArray());
+        $this->assertSame(['key1' => 'value', 'key2' => 'value'], $user->meta()->toArray());
     }
 
     /** @test */

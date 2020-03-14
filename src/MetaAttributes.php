@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace KodeKeep\MetaAttributes;
 
+use ArrayAccess;
 use ArrayIterator;
 use Countable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use IteratorAggregate;
 use JsonSerializable;
 
-class MetaAttributes implements Arrayable, Countable, IteratorAggregate, Jsonable, JsonSerializable
+class MetaAttributes implements ArrayAccess, Arrayable, Countable, IteratorAggregate, Jsonable, JsonSerializable
 {
     protected Model $model;
 
@@ -46,13 +48,7 @@ class MetaAttributes implements Arrayable, Countable, IteratorAggregate, Jsonabl
 
     public function get($key, $default = null)
     {
-        if ($this->has($key)) {
-            $item = $this->getQuery($key)->first();
-
-            return $item ? $item->value : $default;
-        }
-
-        return $default;
+        return Arr::get($this->collection, $key, $default);
     }
 
     public function set($key, $value)
@@ -71,7 +67,7 @@ class MetaAttributes implements Arrayable, Countable, IteratorAggregate, Jsonabl
 
     public function has($key): bool
     {
-        return $this->getQuery($key)->count() === 1;
+        return Arr::has($this->collection, $key);
     }
 
     public function forget($keys): self
@@ -84,6 +80,26 @@ class MetaAttributes implements Arrayable, Countable, IteratorAggregate, Jsonabl
         }
 
         return $this->loadCollection();
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    public function offsetExists($offset)
+    {
+        return $this->collection->offsetExists($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        $this->forget($offset);
     }
 
     public function toArray(): array
@@ -113,13 +129,12 @@ class MetaAttributes implements Arrayable, Countable, IteratorAggregate, Jsonabl
 
     private function loadCollection(): self
     {
-        $this->collection = $this->model->fresh()->metaAttributes;
+        $this->collection = $this->model->fresh()->metaAttributes->mapWithKeys(function ($item) {
+            $key =is_null($item['group']) ? $item['key'] : $item['group'].'.'.$item['key'];
+
+            return [$key => $item['value']];
+        });
 
         return $this;
-    }
-
-    private function getQuery($key): Collection
-    {
-        return $this->collection->where('group', $this->group)->where('key', $key);
     }
 }
