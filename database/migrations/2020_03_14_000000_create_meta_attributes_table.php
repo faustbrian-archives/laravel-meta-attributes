@@ -18,7 +18,7 @@ class CreateMetaAttributesTable extends Migration
             $table->morphs('metable');
             $table->string('group')->index()->nullable();
             $table->string('key')->index();
-            $table->text('value');
+            $table->text('value')->nullable();
             $table->timestamps();
         });
     }
