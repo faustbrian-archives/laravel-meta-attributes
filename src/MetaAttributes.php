@@ -50,7 +50,7 @@ class MetaAttributes implements ArrayAccess, Arrayable, Countable, IteratorAggre
     {
         $value = Arr::get($this->collection, $key, $default);
 
-        if (empty($value)) {
+        if (is_null($value)) {
             return $default;
         }
 
