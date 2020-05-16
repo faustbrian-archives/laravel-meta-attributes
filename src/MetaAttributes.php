@@ -48,7 +48,13 @@ class MetaAttributes implements ArrayAccess, Arrayable, Countable, IteratorAggre
 
     public function get($key, $default = null)
     {
-        return Arr::get($this->collection, $key, $default);
+        $value = Arr::get($this->collection, $key, $default);
+
+        if (empty($value)) {
+            return $default;
+        }
+
+        return $value;
     }
 
     public function set($key, $value)
